@@ -339,23 +339,30 @@ func ConvertNetFlowDataSet(version uint16, baseTime uint32, uptime uint32, recor
 
 func SearchNetFlowDataSetsRecords(version uint16, baseTime uint32, uptime uint32, dataRecords []netflow.DataRecord) []*flowmessage.FlowMessage {
 	flowMessageSet := make([]*flowmessage.FlowMessage, 0)
+        fmt.Println("SearchNetFlowDataSetsRecords=", dataRecords)
 	for _, record := range dataRecords {
+                fmt.Println("SearchNetFlowDataSetsRecord=", record)
 		fmsg := ConvertNetFlowDataSet(version, baseTime, uptime, record.Values)
+                fmt.Println("SearchNetFlowDataSetsRecord fmsg=", fmsg)
 		if fmsg != nil {
 			flowMessageSet = append(flowMessageSet, fmsg)
 		}
 	}
+        fmt.Println("SearchNetFlowDataSetsRecords flowMessageSet=", flowMessageSet)
 	return flowMessageSet
 }
 
 func SearchNetFlowDataSets(version uint16, baseTime uint32, uptime uint32, dataFlowSet []netflow.DataFlowSet) []*flowmessage.FlowMessage {
 	flowMessageSet := make([]*flowmessage.FlowMessage, 0)
 	for _, dataFlowSetItem := range dataFlowSet {
+                fmt.Println("SearchNetFlowDataSets=", dataFlowSetItem)
 		fmsg := SearchNetFlowDataSetsRecords(version, baseTime, uptime, dataFlowSetItem.Records)
+                fmt.Println("SearchNetFlowDataSets fmsg=", fmsg)
 		if fmsg != nil {
 			flowMessageSet = append(flowMessageSet, fmsg...)
 		}
 	}
+        fmt.Println("SearchNetFlowDataSets flowMessageSet=", flowMessageSet)
 	return flowMessageSet
 }
 
@@ -432,6 +439,7 @@ func ProcessMessageNetFlow(msgDec interface{}, samplingRateSys SamplingRateSyste
 
 	switch msgDecConv := msgDec.(type) {
 	case netflow.NFv9Packet:
+                fmt.Println("netflow.netflow.NFv9Packet")
 		dataFlowSet, _, _, optionDataFlowSet := SplitNetFlowSets(msgDecConv)
 
 		seqnum = msgDecConv.SequenceNumber
@@ -453,13 +461,16 @@ func ProcessMessageNetFlow(msgDec interface{}, samplingRateSys SamplingRateSyste
 			fmsg.SamplingRate = uint64(samplingRate)
 		}
 	case netflow.IPFIXPacket:
+                fmt.Println("netflow.IPFIXPacket")
 		dataFlowSet, _, _, optionDataFlowSet := SplitIPFIXSets(msgDecConv)
+                fmt.Println("netflow.IPFIXPacket split=", dataFlowSet, optionDataFlowSet)
 
 		seqnum = msgDecConv.SequenceNumber
 		baseTime = msgDecConv.ExportTime
 		obsDomainId := msgDecConv.ObservationDomainId
 
 		flowMessageSet = SearchNetFlowDataSets(10, baseTime, uptime, dataFlowSet)
+                fmt.Println("netflow.IPFIXPacket flowMessageSet=", flowMessageSet)
 
 		samplingRate, found := SearchNetFlowOptionDataSets(optionDataFlowSet)
 		if samplingRateSys != nil {

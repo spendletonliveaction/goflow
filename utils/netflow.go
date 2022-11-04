@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"sync"
 	"time"
+        "fmt"
 
 	"github.com/cloudflare/goflow/v3/decoders/netflow"
 	flowmessage "github.com/cloudflare/goflow/v3/pb"
@@ -214,6 +215,11 @@ func (s *StateNetFlow) DecodeFlow(msg interface{}) error {
 		}
 		flowMessageSet, err = producer.ProcessMessageNetFlow(msgDecConv, sampling)
 
+                if err != nil {
+                    fmt.Print("Error processing netflow=", err)
+                }
+                fmt.Print("Processed ", len(flowMessageSet))
+		
 		for _, fmsg := range flowMessageSet {
 			fmsg.TimeReceived = ts
 			fmsg.SamplerAddress = samplerAddress
@@ -307,6 +313,11 @@ func (s *StateNetFlow) DecodeFlow(msg interface{}) error {
 		}
 		flowMessageSet, err = producer.ProcessMessageNetFlow(msgDecConv, sampling)
 
+                if err != nil {
+                    fmt.Print("Error processing ipfix netflow=", err)
+                }
+                fmt.Print("Processed ", len(flowMessageSet))
+
 		for _, fmsg := range flowMessageSet {
 			fmsg.TimeReceived = ts
 			fmsg.SamplerAddress = samplerAddress
@@ -327,7 +338,9 @@ func (s *StateNetFlow) DecodeFlow(msg interface{}) error {
 		}).
 		Observe(float64((timeTrackStop.Sub(timeTrackStart)).Nanoseconds()) / 1000)
 
+        fmt.Println("Publishing...", s)
 	if s.Transport != nil {
+                fmt.Println("Publishing...")
 		s.Transport.Publish(flowMessageSet)
 	}
 

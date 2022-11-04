@@ -98,10 +98,12 @@ func main() {
 	go httpServer(sNF)
 
 	if *EnableKafka {
+	        log.Info("Starting Kafka")
 		kafkaState, err := transport.StartKafkaProducerFromArgs(log.StandardLogger())
 		if err != nil {
 			log.Fatal(err)
 		}
+	        log.Info("Started Kafka")
 		kafkaState.FixedLengthProto = *FixedLength
 
 		sSFlow.Transport = kafkaState

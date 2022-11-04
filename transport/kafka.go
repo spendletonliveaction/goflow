@@ -114,6 +114,7 @@ func StartKafkaProducer(addrs []string, topic string, hashing bool, keying strin
 		}
 	}
 
+	log.Infof("Starting producer")
 	kafkaProducer, err := sarama.NewAsyncProducer(addrs, kafkaConfig)
 	if err != nil {
 		return nil, err
@@ -138,6 +139,7 @@ func StartKafkaProducer(addrs []string, topic string, hashing bool, keying strin
 		}()
 	}
 
+	log.Infof("Started producer")
 	return &state, nil
 }
 
@@ -160,6 +162,7 @@ func HashProto(fields []string, flowMessage *flowmessage.FlowMessage) string {
 }
 
 func (s KafkaState) SendKafkaFlowMessage(flowMessage *flowmessage.FlowMessage) {
+	print("SendKafkaFlowMessage to " + s.topic)
 	var key sarama.Encoder
 	if s.hashing {
 		keyStr := HashProto(s.keying, flowMessage)
@@ -181,6 +184,7 @@ func (s KafkaState) SendKafkaFlowMessage(flowMessage *flowmessage.FlowMessage) {
 }
 
 func (s KafkaState) Publish(msgs []*flowmessage.FlowMessage) {
+	fmt.Print("Publish msgs=", len(msgs))
 	for _, msg := range msgs {
 		s.SendKafkaFlowMessage(msg)
 	}
