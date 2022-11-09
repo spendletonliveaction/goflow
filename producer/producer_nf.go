@@ -162,14 +162,28 @@ func ConvertNetFlowDataSet(version uint16, baseTime uint32, uptime uint32, recor
 		// Statistics
 		case netflow.NFV9_FIELD_IN_BYTES:
 			fmt.Printf("\nNETFLOW INBYTES RECORD = [%v]\n", v)
-			DecodeUNumber(v, &(flowMessage.Bytes))
+                        var n uint64
+			DecodeUNumber(v, &n)
+                        flowMessage.Bytes += n
+			fmt.Printf("\nNETFLOW INBYTES RECORD DECODE = [%v]\n", flowMessage.Bytes)
 		case netflow.NFV9_FIELD_IN_PKTS:
-			fmt.Printf("\nNETFLOW INBYTES RECORD = [%v]\n", v)
-			DecodeUNumber(v, &(flowMessage.Packets))
+			fmt.Printf("\nNETFLOW INPKTS RECORD = [%v]\n", v)
+                        var n uint64
+			DecodeUNumber(v, &n)
+                        flowMessage.Packets += n
+			fmt.Printf("\nNETFLOW INPKTS RECORD DECODE = [%v]\n", flowMessage.Packets)
 		case netflow.NFV9_FIELD_OUT_BYTES:
-			DecodeUNumber(v, &(flowMessage.Bytes))
+			fmt.Printf("\nNETFLOW OUTBYTES RECORD = [%v]\n", v)
+                        var n uint64
+			DecodeUNumber(v, &n)
+                        flowMessage.Bytes += n
+			fmt.Printf("\nNETFLOW OUTBYTES RECORD DECODE = [%v]\n", flowMessage.Bytes)
 		case netflow.NFV9_FIELD_OUT_PKTS:
-			DecodeUNumber(v, &(flowMessage.Packets))
+			fmt.Printf("\nNETFLOW OUTPKTS RECORD = [%v]\n", v)
+                        var n uint64
+			DecodeUNumber(v, &n)
+                        flowMessage.Packets += n
+			fmt.Printf("\nNETFLOW OUTPKTS RECORD DECODE = [%v]\n", flowMessage.Packets)
 
 		// L4
 		case netflow.NFV9_FIELD_L4_SRC_PORT:
