@@ -155,12 +155,16 @@ func ConvertNetFlowDataSet(version uint16, baseTime uint32, uptime uint32, recor
 			continue
 		}
 
+		fmt.Printf("\nNETFLOW RECORD = [%v]\n", df)
+
 		switch df.Type {
 
 		// Statistics
 		case netflow.NFV9_FIELD_IN_BYTES:
+			fmt.Printf("\nNETFLOW INBYTES RECORD = [%v]\n", v)
 			DecodeUNumber(v, &(flowMessage.Bytes))
 		case netflow.NFV9_FIELD_IN_PKTS:
+			fmt.Printf("\nNETFLOW INBYTES RECORD = [%v]\n", v)
 			DecodeUNumber(v, &(flowMessage.Packets))
 		case netflow.NFV9_FIELD_OUT_BYTES:
 			DecodeUNumber(v, &(flowMessage.Bytes))
