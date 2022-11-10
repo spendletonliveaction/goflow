@@ -218,7 +218,6 @@ func (s *StateNetFlow) DecodeFlow(msg interface{}) error {
 		if err != nil {
 			fmt.Print("Error processing netflow=", err)
 		}
-		fmt.Print("Processed ", len(flowMessageSet))
 
 		for _, fmsg := range flowMessageSet {
 			fmsg.TimeReceived = ts
