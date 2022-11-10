@@ -162,7 +162,6 @@ func HashProto(fields []string, flowMessage *flowmessage.FlowMessage) string {
 }
 
 func (s KafkaState) SendKafkaFlowMessage(flowMessage *flowmessage.FlowMessage) {
-	print("SendKafkaFlowMessage to " + s.topic)
 	var key sarama.Encoder
 	if s.hashing {
 		keyStr := HashProto(s.keying, flowMessage)

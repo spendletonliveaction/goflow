@@ -167,7 +167,7 @@ func ConvertNetFlowDataSet(version uint16, baseTime uint32, uptime uint32, recor
 			flowMessage.Bytes += n
 			//fmt.Printf("\nNETFLOW INBYTES RECORD DECODE = [%v]\n", flowMessage.Bytes)
 		case netflow.NFV9_FIELD_IN_PKTS:
-			fmt.Printf("\nNETFLOW INPKTS RECORD = [%v]\n", v)
+			//fmt.Printf("\nNETFLOW INPKTS RECORD = [%v]\n", v)
 			var n uint64
 			DecodeUNumber(v, &n)
 			flowMessage.Packets += n
