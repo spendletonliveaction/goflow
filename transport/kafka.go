@@ -183,7 +183,7 @@ func (s KafkaState) SendKafkaFlowMessage(flowMessage *flowmessage.FlowMessage) {
 }
 
 func (s KafkaState) Publish(msgs []*flowmessage.FlowMessage) {
-	fmt.Printf("Kafka Publish msgs=%v\n", len(msgs))
+	//fmt.Printf("Kafka Publish msgs=%v\n", len(msgs))
 	for _, msg := range msgs {
 		s.SendKafkaFlowMessage(msg)
 	}
