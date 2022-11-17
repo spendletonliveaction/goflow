@@ -337,7 +337,7 @@ func (s *StateNetFlow) DecodeFlow(msg interface{}) error {
 		Observe(float64((timeTrackStop.Sub(timeTrackStart)).Nanoseconds()) / 1000)
 	fmt.Printf("Processed # flows=%v\n", len(flowMessageSet))
 	if s.Transport != nil {
-		fmt.Printf("Publishing %v\n", flowMessageSet)
+		//fmt.Printf("Publishing %v\n", flowMessageSet)
 		s.Transport.Publish(flowMessageSet)
 	}
 
